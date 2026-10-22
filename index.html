@@ -4,70 +4,275 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CarlX APK</title>
+  <meta name="theme-color" content="#101827">
+  <title>Carl X APK</title>
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      padding: 24px;
       font-family: Arial, sans-serif;
       background: #101827;
       color: white;
+    }
+    header {
+      padding: 25px 16px;
       text-align: center;
+      background: #172943;
+      border-bottom: 2px solid #16c7b7;
     }
     .logo {
-      font-size: 38px;
-      font-weight: bold;
-      color: #55d6ff;
-      margin-top: 50px;
-    }
-    p { color: #cbd5e1; }
-    button {
-      display: block;
-      width: 100%;
-      padding: 16px;
-      margin: 18px auto;
-      border: 0;
-      border-radius: 12px;
-      font-size: 18px;
-      font-weight: bold;
-      background: #55d6ff;
+      width: 65px;
+      height: 65px;
+      margin: auto auto 10px;
+      border-radius: 18px;
+      background: #16c7b7;
       color: #101827;
+      display: grid;
+      place-items: center;
+      font-size: 25px;
+      font-weight: bold;
     }
-    .second { background: #263449; color: white; }
-    #message { margin-top: 24px; overflow-wrap: anywhere; }
+    h1 { margin: 5px; font-size: 27px; }
+    header p { color: #c4d5e9; margin-bottom: 0; }
+    main { max-width: 550px; margin: auto; padding: 16px; }
+    .card {
+      background: #1b293d;
+      border: 1px solid #30425b;
+      border-radius: 15px;
+      padding: 17px;
+      margin-bottom: 16px;
+    }
+    h2 { font-size: 19px; margin-top: 0; }
+    label { display: block; margin: 12px 0 7px; }
+    input, button {
+      width: 100%;
+      padding: 13px;
+      border-radius: 9px;
+      font-size: 15px;
+    }
+    input {
+      background: #101827;
+      color: white;
+      border: 1px solid #52657d;
+    }
+    input[type="file"] { padding: 10px; }
+    button {
+      border: 0;
+      background: #16c7b7;
+      color: #101827;
+      font-weight: bold;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: #30425b;
+      color: white;
+    }
+    .hint {
+      color: #bdcce0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .status {
+      background: #101827;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+      overflow-wrap: anywhere;
+    }
+    .file {
+      padding: 10px;
+      border-bottom: 1px solid #30425b;
+      overflow-wrap: anywhere;
+    }
+    footer {
+      text-align: center;
+      color: #bdcce0;
+      padding: 20px;
+      font-size: 12px;
+    }
   </style>
 </head>
 <body>
-  <div class="logo">CarlX</div>
-  <h1>Bienvenue sur CarlX APK</h1>
-  <p>Transfère tes fichiers, même à distance.</p>
 
-  <button onclick="envoyer()">Envoyer un fichier</button>
-  <button class="second" onclick="recevoir()">Recevoir un fichier</button>
+<header>
+  <div class="logo">CX</div>
+  <h1>Carl X APK</h1>
+  <p>Envoyer • Recevoir • Partager</p>
+</header>
 
-  <input id="fichier" type="file" hidden>
-  <div id="message"></div>
+<main>
+  <section class="card">
+    <h2>👤 Destinataire</h2>
+    <label for="phone">Numéro de téléphone du destinataire</label>
+    <input id="phone" type="tel"
+      placeholder="Ex. : +509 0000 0000"
+      autocomplete="tel">
+    <p class="hint">
+      Saisissez le numéro de la personne à qui vous souhaitez
+      envoyer un fichier. L'envoi direct par numéro nécessite
+      encore une connexion à un service de transfert.
+    </p>
+  </section>
 
-  <script>
-    function envoyer() {
-      document.getElementById('fichier').click();
+  <section class="card">
+    <h2>📤 Envoyer des jeux, applications et fichiers</h2>
+    <label for="sendFiles">Choisir les fichiers à envoyer</label>
+    <input id="sendFiles" type="file" multiple>
+    <div id="sendList" class="status">
+      Aucun fichier sélectionné.
+    </div>
+    <button id="shareBtn">Partager les fichiers</button>
+    <p class="hint">
+      Sélectionnez les fichiers accessibles sur votre téléphone.
+      Si un fichier APK est disponible, vous pouvez le sélectionner.
+      Le partage dépend des fonctions prises en charge par le navigateur.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>📥 Recevoir des jeux, applications et fichiers</h2>
+    <p class="hint">
+      Sélectionnez un fichier déjà reçu ou présent sur votre téléphone
+      pour afficher son nom et sa taille.
+    </p>
+    <label for="receiveFiles">Sélectionner des fichiers</label>
+    <input id="receiveFiles" type="file" multiple>
+    <div id="receiveList" class="status">
+      Aucun fichier sélectionné.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>🌐 Connexion Internet</h2>
+    <div id="connection" class="status"></div>
+    <button class="secondary" id="checkBtn">
+      Vérifier la connexion
+    </button>
+    <p class="hint">
+      Une connexion Internet active ne signifie pas que le transfert
+      entre deux téléphones fonctionne déjà. Un service de transfert
+      et un système d'identification des destinataires sont nécessaires.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>ℹ️ À propos</h2>
+    <p>Carl X APK — Partage de fichiers sur Android.</p>
+    <p class="hint">
+      L'envoi direct vers un numéro de téléphone et la réception
+      à distance nécessitent encore un service de transfert connecté.
+      L'accès aux applications installées demande également des
+      fonctions Android spécifiques.
+    </p>
+  </section>
+</main>
+
+<footer>Carl X APK © 2026</footer>
+
+<script>
+  const phone = document.getElementById("phone");
+  const sendInput = document.getElementById("sendFiles");
+  const receiveInput = document.getElementById("receiveFiles");
+  const sendList = document.getElementById("sendList");
+  const receiveList = document.getElementById("receiveList");
+  const connection = document.getElementById("connection");
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + " octets";
+    if (bytes < 1048576)
+      return (bytes / 1024).toFixed(1) + " Ko";
+    return (bytes / 1048576).toFixed(2) + " Mo";
+  }
+
+  function showFiles(input, target, emptyMessage) {
+    const files = Array.from(input.files || []);
+    target.replaceChildren();
+
+    if (!files.length) {
+      target.textContent = emptyMessage;
+      return;
     }
 
-    document.getElementById('fichier').addEventListener('change', function() {
-      const f = this.files[0];
-      if (f) {
-        document.getElementById('message').textContent =
-          'Fichier sélectionné : ' + f.name +
-          '. Le transfert Internet reste à configurer.';
-      }
+    files.forEach(file => {
+      const item = document.createElement("div");
+      item.className = "file";
+      item.textContent =
+        "📄 " + file.name + " — " + formatSize(file.size);
+      target.appendChild(item);
     });
+  }
 
-    function recevoir() {
-      document.getElementById('message').textContent =
-        'La réception à distance sera disponible après la configuration du service Internet.';
+  sendInput.addEventListener("change", () => {
+    showFiles(sendInput, sendList, "Aucun fichier sélectionné.");
+  });
+
+  receiveInput.addEventListener("change", () => {
+    showFiles(receiveInput, receiveList, "Aucun fichier sélectionné.");
+  });
+
+  document.getElementById("shareBtn").addEventListener("click",
+    async () => {
+      const files = Array.from(sendInput.files || []);
+      const number = phone.value.trim();
+
+      if (!number) {
+        alert("Veuillez saisir le numéro du destinataire.");
+        phone.focus();
+        return;
+      }
+
+      if (!files.length) {
+        alert("Veuillez sélectionner au moins un fichier.");
+        return;
+      }
+
+      if (navigator.share && navigator.canShare) {
+        try {
+          const data = { files: files };
+
+          if (navigator.canShare(data)) {
+            await navigator.share({
+              title: "Carl X APK",
+              text: "Fichiers à partager. Destinataire : " + number,
+              files: files
+            });
+
+            alert(
+              "Le menu de partage a été ouvert. " +
+              "Vérifiez le destinataire et l'application choisis."
+            );
+            return;
+          }
+        } catch (error) {
+          if (error.name === "AbortError") return;
+          console.error(error);
+        }
+      }
+
+      alert(
+        "Le navigateur ne prend pas en charge ce partage. " +
+        "Essayez un autre navigateur ou des fichiers compatibles. " +
+        "L'envoi direct au numéro saisi n'est pas encore disponible."
+      );
     }
-  </script>
+  );
+
+  function checkConnection() {
+    connection.textContent = navigator.onLine
+      ? "Internet semble connecté. Transfert Carl X non vérifié."
+      : "Aucune connexion Internet détectée par le navigateur.";
+  }
+
+  document.getElementById("checkBtn")
+    .addEventListener("click", checkConnection);
+
+  window.addEventListener("online", checkConnection);
+  window.addEventListener("offline", checkConnection);
+  checkConnection();
+</script>
+
 </body>
-</html>
+      </html>
 
 
