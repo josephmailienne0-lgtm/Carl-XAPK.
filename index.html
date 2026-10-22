@@ -1,12 +1,73 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carl X APK</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CarlX APK</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: white;
+      text-align: center;
+    }
+    .logo {
+      font-size: 38px;
+      font-weight: bold;
+      color: #55d6ff;
+      margin-top: 50px;
+    }
+    p { color: #cbd5e1; }
+    button {
+      display: block;
+      width: 100%;
+      padding: 16px;
+      margin: 18px auto;
+      border: 0;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      background: #55d6ff;
+      color: #101827;
+    }
+    .second { background: #263449; color: white; }
+    #message { margin-top: 24px; overflow-wrap: anywhere; }
+  </style>
 </head>
 <body>
-  <h1>Bienvenue sur Carl X APK</h1>
-  <p>Mon application est en cours de création !</p>
+  <div class="logo">CarlX</div>
+  <h1>Bienvenue sur CarlX APK</h1>
+  <p>Transfère tes fichiers, même à distance.</p>
+
+  <button onclick="envoyer()">Envoyer un fichier</button>
+  <button class="second" onclick="recevoir()">Recevoir un fichier</button>
+
+  <input id="fichier" type="file" hidden>
+  <div id="message"></div>
+
+  <script>
+    function envoyer() {
+      document.getElementById('fichier').click();
+    }
+
+    document.getElementById('fichier').addEventListener('change', function() {
+      const f = this.files[0];
+      if (f) {
+        document.getElementById('message').textContent =
+          'Fichier sélectionné : ' + f.name +
+          '. Le transfert Internet reste à configurer.';
+      }
+    });
+
+    function recevoir() {
+      document.getElementById('message').textContent =
+        'La réception à distance sera disponible après la configuration du service Internet.';
+    }
+  </script>
 </body>
 </html>
+
+
